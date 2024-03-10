@@ -1,31 +1,36 @@
-const toggle = document.querySelector('.nav__toggle')
-const links = document.querySelector('.nav__links')
-const btnSwitch = document.querySelector('#switch');
+const toggle = document.querySelector(".nav__toggle");
+const links = document.querySelector(".nav__menu");
 
+toggle.addEventListener("click", () => {
+  links.classList.toggle("nav__menu--active");
+});
 
-toggle.addEventListener('click', () => {
-    links.classList.toggle('nav__toggle--active')
-})
+// Función para el switch cambie de tema
+const switchToggle = document.querySelector(".theme-switch input");
 
-btnSwitch.addEventListener('click', () => {
-    document.body.classList.toggle('dark')
-    btnSwitch.classList.toggle('active')
+switchToggle.addEventListener("click", () => {
+  document.documentElement.classList.toggle("dark-mode");
+  saveTheme();
+});
 
-    // Guardado en Local Storage
+const saveTheme = () => {
+  if (document.documentElement.classList.contains("dark-mode")) {
+    localStorage.setItem("theme", "dark");
+  } else {
+    localStorage.setItem("theme", "light");
+  }
+};
 
-    if (document.body.classList.contains('dark')) {
-        localStorage.setItem('dark-mode', 'true');
-    } else {
-        localStorage.setItem('dark-mode', 'false');
-    }
-})
+// Funcion para guardar la preferencia de color en el localStorage
+const loadTheme = () => {
+  const currentTheme = localStorage.getItem("theme");
+  if (currentTheme === "dark") {
+    document.documentElement.classList.add("dark-mode");
+    switchToggle.checked = true;
+  } else {
+    document.documentElement.classList.remove("dark-mode");
+    switchToggle.checked = false;
+  }
+};
 
-// Comprobando modo actual
-
-if(localStorage.getItem('dark-mode') === 'true'){
-    document.body.classList.add('dark')
-    btnSwitch.classList.toggle('active')
-} else {
-    document.body.classList.remove('dark')
-    btnSwitch.classList.remove('active')
-}
+loadTheme();
